@@ -1,15 +1,15 @@
 /* pottery main */
 
 // Base function.
-var pottery = function() {
+var Pottery = function() {
   // Add functionality here.
   return true;
 };
 
 
 // Version.
-pottery.VERSION = '0.0.0';
+Pottery.VERSION = '0.0.0';
 
 
 // Export to the root, which is probably `window`.
-root.pottery = pottery;
+root.Pottery = Pottery;

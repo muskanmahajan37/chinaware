@@ -13,4 +13,13 @@ results/
 *.out
 *.pid
 *.gz
-.idea
+
+*.iml
+.idea/
+*.ipr
+*.iws
+learning/
+coverage/
+report/
+_SpecRunner.html
+.grunt
