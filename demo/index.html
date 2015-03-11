@@ -19,16 +19,180 @@
 
     <p>See the <a href="http://phodal.github.io/pottery">project homepage</a>.
     <p>Check out the <a href="https://github.com/phodal/pottery">project repo</a>.
-    <p>Copyright 1 Phodal Huang</p>
+    <p>Copyright 2015 Phodal Huang</p>
 
     <script src="./../dist/pottery.js"></script>
 
     <script>
-      /* begin demo script */
+        var MapObj,
+          sjs,
+          doc = document,
+          tileProperties = [],
+          that = this,
+          MAPS_DIR = 'maps/';
+        tileLayers = [];
 
-      var n = pottery();
-      console.log(n);
+        var sjs = {
+          // a global cache to load each sprite only one time.
+          spriteCache: {},
+          debug: false,
+          error: function error(msg) {
+            _log("Error: " + msg);
+          },
+          warning: function warning(msg) {
+            _log("Warning: " + msg);
+          }
+        };
 
+        this.callback = function (data) {
+          console.log(data);
+        };
+
+        function _getGid(x, y) {
+          var index;
+          if (x < 0 || y < 0 || x >= MapObj.width || y >= MapObj.height) {
+            return;
+          }
+          index = x + y * this.width;
+          return this.data[index];
+        }
+
+        function buildTileProperties() {
+
+          var i,
+            prop, tileset;
+
+          for (i = 0; i < MapObj.tilesets.length; i += 1) {
+            tileset = MapObj.tilesets[i];
+
+            for (prop in tileset.tileproperties) {
+              if (tileset.tileproperties.hasOwnProperty(prop)) {
+                // parseInt takes a radix (here and typically it will be base10)
+                tileProperties[parseInt(prop, 10) + tileset.firstgid] = tileset.tileproperties[prop];
+              }
+            }
+          }
+        }
+
+        function buildMap(parsedMap) {
+          var layer,
+            images = [],
+            i;
+
+          MapObj = parsedMap;
+          for (i = 0; i < MapObj.layers.length; i += 1) {
+            layer = MapObj.layers[i];
+
+            // tilelayer and objectgroup etc. are defined internally by Tiled [map editor]
+            if (layer.type === 'tilelayer') {
+              // assign private method to each layer
+              layer.getGid = _getGid;
+              tileLayers.push(layer);
+            }
+          }
+
+          buildTileProperties();
+
+          for (i = 0; i < MapObj.tilesets.length; i += 1) {
+            images.push(MAPS_DIR + MapObj.tilesets[i].image);
+          }
+
+          console.log(images, layer);
+          loadImages(images, function(data){
+            console.log(data)
+          });
+        }
+
+        //IE 8 fix help functions
+        function _addEventListener(element, type, listener, useCapture) {
+          if (element.addEventListener) {
+            element.addEventListener(type, listener, useCapture);
+          } else if (element.attachEvent) {
+            element.attachEvent("on" + type, listener);
+          }
+        }
+
+        function overlay(x, y, w, h) {
+          var div = doc.createElement('div'),
+            s = div.style;
+          s.top = y + 'px';
+          s.left = x + 'px';
+          s.width = w + 'px';
+          s.height = h + 'px';
+          s.color = '#fff';
+          s.zIndex = 100;
+          s.position = 'absolute';
+          s.backgroundColor = '#000';
+          s.opacity = 0.7;
+          return div;
+        }
+
+        function loadImages(images, callback) {
+          // function used to preload the sprite images
+          if (!callback) {
+            callback = this.main;
+          }
+
+          var toLoad = 0, total, div, img, src, error, scene, i;
+          for (i = 0; i < images.length; i++) {
+            if (!sjs.spriteCache[images[i]]) {
+              toLoad += 1;
+              sjs.spriteCache[images[i]] = {src: images[i], loaded: false, loading: false};
+            }
+          }
+
+          if (toLoad === 0) {
+            return callback();
+          }
+
+          total = toLoad;
+          this.w = 480
+          this.h = 480
+          div = overlay(0, 0, this.w, this.h);
+          div.style.textAlign = 'center';
+          div.style.paddingTop = (this.h / 2 - 16) + 'px';
+
+          div.innerHTML = 'Loading';
+          document.body.appendChild(div);
+          error = false;
+
+          var _loadImg = function (src) {
+            sjs.spriteCache[src].loading = true;
+            img = document.createElement('img');
+            sjs.spriteCache[src].img = img;
+            _addEventListener(img, 'load', function () {
+              sjs.spriteCache[src].loaded = true;
+              toLoad -= 1;
+              if (error === false) {
+                if (toLoad === 0) {
+                  document.body.removeChild(div);
+                  callback(img);
+                } else {
+                  div.innerHTML = 'Loading ' + ((total - toLoad) / total * 100 | 0) + '%';
+                }
+              }
+            }, false);
+
+            _addEventListener(img, 'error', function () {
+              error = true;
+              div.innerHTML = 'Error loading image ' + src;
+            }, false);
+
+            img.src = src;
+          };
+
+          for (src in sjs.spriteCache) {
+            if (sjs.spriteCache.hasOwnProperty(src)) {
+              if (!sjs.spriteCache[src].loading) {
+                _loadImg(src);
+              }
+            }
+          }
+        }
+
+        Pottery.get('assets/hexagonal-mini.json', function (text) {
+          buildMap(JSON.parse(text));
+        });
       /* end demo script */
     </script>
   </body>
