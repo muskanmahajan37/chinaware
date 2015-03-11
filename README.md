@@ -1,43 +1,31 @@
 # pottery
 
-a light weight javascript game engine for mobile 
+> a light weight javascript game engine for mobile 
 
-## About
+##Demo
 
-A JavaScript library by Phodal Huang.
 
-See the [project homepage](http://phodal.github.io/pottery).
 
-## Installation
+##Todo
 
-Using Bower:
-
-    bower install pottery
-
-Or grab the [source](https://github.com/phodal/pottery/dist/pottery.js) ([minified](https://github.com/phodal/pottery/dist/pottery.min.js)).
-
-## Usage
-
-Basic usage is as follows:
-
-    pottery();
-
-For advanced usage, see the documentation.
-
-## Documentation
-
-Start with `docs/MAIN.md`.
-
-## Contributing
-
-We'll check out your contribution if you:
-
-* Provide a comprehensive suite of tests for your fork.
-* Have a clear and documented rationale for your changes.
-* Package these up in a pull request.
-
-We'll do our best to help you out with any contribution issues you may have.
+- Render 
+- TiledMap Editor 支持
+- DOM
+- Loader
+- Event
+- Input(mouse,keyboard,touch)
+- UI
+- Animation
+- Audio
+- Ajax
+ 
+附加
+ 
+- Box2D
+- Scenes
 
 ## License
 
-MIT. See `LICENSE.txt` in this directory.
+© 2015 [Phodal Huang](http://www.phodal.com). This code is distributed under the MIT license. See `LICENSE.txt` in this directory.
+
+[待我代码编成，娶你为妻可好](http://www.xuntayizhan.com/person/ji-ke-ai-qing-zhi-er-shi-dai-wo-dai-ma-bian-cheng-qu-ni-wei-qi-ke-hao-wan/)
