@@ -53,6 +53,7 @@ module.exports = function (grunt) {
           //'src/simpleview.js',
           'src/promise.js',
           'src/effect.js',
+          'src/Tile.js',
           'src/router.js',
           'src/_outro.js'
         ],
