@@ -516,7 +516,11 @@ var Tiled = Pottery.prototype.Class(function (tiled) {
   };
 });
 
-Pottery.prototype = Pottery.extend(Pottery.prototype, Tiled);
+var tiled = {
+  Tiled: Tiled
+};
+
+Pottery.prototype = Pottery.extend(Pottery.prototype, tiled);
 
 
 }(this));
