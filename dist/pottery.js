@@ -396,7 +396,7 @@ function overlay(x, y, w, h) {
 
 
 function loadImages(images, callback) {
-  var img,src,sjs, i, toLoad, total, div;
+  var img,src,sjs, i, toLoad = 0, total, div;
   var doc = root.document;
   var h = 480;
   var w = 480;
@@ -430,7 +430,7 @@ function loadImages(images, callback) {
       toLoad -= 1;
       if (error === false) {
         if (toLoad === 0) {
-          //scene.dom.removeChild(div);
+          //window.document.removeChild(div);
           callback();
         } else {
           div.innerHTML = 'Loading ' + ((total - toLoad) / total * 100 | 0) + '%';
@@ -626,7 +626,9 @@ var Tiled = function(url){
     }
 
     console.log(images, self.tileProperties, self.activeObjects);
-    loadImages(images, that.callback);
+    loadImages(images, function(){
+      console.log("finish");
+    });
   };
 };
 
