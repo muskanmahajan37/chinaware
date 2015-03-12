@@ -370,19 +370,17 @@ Pottery.prototype = Pottery.extend(Pottery.prototype, fx);
 
 /*jshint camelcase: false */
 
-function optionValue(options, name, default_value, type) {
-  if (options && options[name] !== undefined) {
-    if (type === 'int') {
-      return options[name] | 0;
-    }
-    return options[name];
+function _addEventListener(element, type,listener,useCapture){
+  if(element.addEventListener){
+    element.addEventListener(type, listener, useCapture);
+  }else if(element.attachEvent){
+    element.attachEvent("on" + type, listener);
   }
-  return default_value;
 }
 
 
 function overlay(x, y, w, h) {
-  var div = doc.createElement('div'),
+  var div = root.document.createElement('div'),
     s = div.style;
   s.top = y + 'px';
   s.left = x + 'px';
@@ -396,130 +394,25 @@ function overlay(x, y, w, h) {
   return div;
 }
 
-//IE 8 fix help functions
-function _addEventListener(element, type,listener,useCapture){
-  if(element.addEventListener){
-    element.addEventListener(type, listener, useCapture);
-  }else if(element.attachEvent){
-    element.attachEvent("on" + type, listener);
-  }
-}
 
-var sjs, Sprite, Scene, Layer, Ticker_, Cycle, Input,
-  doc = window.document,
-  nb_scene = 0;
+function loadImages(images, callback) {
+  var img,src,sjs, i, toLoad, total, div;
+  var doc = root.document;
+  var h = 480;
+  var w = 480;
+  var error = false;
 
-Scene = function Scene(options) {
+  sjs = {
+    spriteCache: {}
+  };
 
-  if (this.constructor !== Scene) {
-    return new Scene(options);
-  }
+  div = overlay(0, 0, w, h);
+  div.style.textAlign = 'center';
+  div.style.paddingTop = (h / 2 - 16) + 'px';
 
-  this.autoPause = optionValue(options, 'autoPause', true);
-  // main function
-  this.main = optionValue(options, 'main', function () {});
+  div.innerHTML = 'Loading';
+  window.document.body.appendChild(div);
 
-  var div = doc.createElement('div'), parent;
-  div.style.overflow = 'hidden';
-  // TODO: detect those features
-  // image-rendering: -moz-crisp-edges;
-  // ms-interpolation-mode: nearest-neighbor;
-  div.style.imageRendering = '-webkit-optimize-contrast';
-  div.style.position = 'relative';
-  div.className = 'sjs';
-  div.id = 'sjs' + nb_scene;
-  this.id = nb_scene;
-  nb_scene = nb_scene + 1;
-  parent = optionValue(options, 'parent', doc.body);
-  parent.appendChild(div);
-  this.w = optionValue(options, 'w', 480, 'int');
-  this.h = optionValue(options, 'h', 320, 'int');
-  this.dom = div;
-  this.dom.style.width = this.w + 'px';
-  this.dom.style.height = this.h + 'px';
-  this.layers = {};
-  this.ticker = null;
-  this.useCanvas = optionValue(options, "useCanvas",
-    global.location.href.indexOf('canvas') !== -1);
-
-  this.xscale = 1;
-  this.yscale = 1;
-
-  // needs to be done after this.useCanvas
-  this.Layer("default");
-  sjs.scenes.push(this);
-  return this;
-};
-
-Scene.prototype.constructor = Scene;
-
-Scene.prototype.Sprite = function SceneSprite(src, layer) {
-  // A shortcut for sjs.Sprite
-  if(layer===undefined)
-    sjs.error("When you create Sprite from the scene the layer should be specified or false.");
-  return new Sprite(this, src, layer);
-};
-
-Scene.prototype.Layer = function SceneLayer(name, options) {
-  return new Layer(this, name, options);
-};
-
-// just for convenience
-Scene.prototype.Cycle = function SceneCycle(triplets) {
-  return new Cycle(triplets);
-};
-
-Scene.prototype.Input = function SceneInput() {
-  this.input = new Input(this);
-  return this.input;
-};
-
-Scene.prototype.scale = function SceneScale(x, y) {
-  this.xscale = x;
-  this.yscale = y;
-  this.dom.style[sjs.tproperty+"Origin"] = "0 0";
-  this.dom.style[sjs.tproperty] = "scale(" + x + "," + y + ")";
-};
-
-Scene.prototype.toString = function () {
-  return "Scene(" + String(this.id) + ")";
-};
-
-Scene.prototype.reset = function reset() {
-  var l;
-  if (this.ticker) {
-    this.ticker.pause();
-  }
-  for (l in this.layers) {
-    if (this.layers.hasOwnProperty(l)) {
-      this.layers[l].dom.parentNode.removeChild(this.layers[l].dom);
-      delete this.layers[l];
-    }
-  }
-  // remove remaining children
-  while (this.dom.childNodes.length >= 1) {
-    this.dom.removeChild(this.dom.firstChild);
-  }
-  this.layers = {};
-  this.Layer("default");
-};
-
-Scene.prototype.Ticker = function Ticker(paint, options) {
-  if (this.ticker) {
-    this.ticker.pause();
-    this.ticker.paint = function () {};
-  }
-  this.ticker = new Ticker_(this, paint, options);
-  return this.ticker;
-};
-
-Scene.prototype.loadImages = function loadImages(images, callback) {
-  // function used to preload the sprite images
-  if (!callback) {
-    callback = this.main;
-  }
-
-  var toLoad = 0, total, div, img, src, error, scene, i;
   for (i = 0; i < images.length; i++) {
     if (!sjs.spriteCache[images[i]]) {
       toLoad += 1;
@@ -527,20 +420,7 @@ Scene.prototype.loadImages = function loadImages(images, callback) {
     }
   }
 
-  if (toLoad === 0) {
-    return callback();
-  }
-
   total = toLoad;
-  div = overlay(0, 0, this.w, this.h);
-  div.style.textAlign = 'center';
-  div.style.paddingTop = (this.h / 2 - 16) + 'px';
-
-  div.innerHTML = 'Loading';
-  this.dom.appendChild(div);
-  scene = this;
-  error = false;
-
   var _loadImg = function(src) {
     sjs.spriteCache[src].loading = true;
     img = doc.createElement('img');
@@ -550,7 +430,7 @@ Scene.prototype.loadImages = function loadImages(images, callback) {
       toLoad -= 1;
       if (error === false) {
         if (toLoad === 0) {
-          scene.dom.removeChild(div);
+          //scene.dom.removeChild(div);
           callback();
         } else {
           div.innerHTML = 'Loading ' + ((total - toLoad) / total * 100 | 0) + '%';
@@ -564,7 +444,7 @@ Scene.prototype.loadImages = function loadImages(images, callback) {
     }, false);
 
     img.src = src;
-  }
+  };
 
   for (src in sjs.spriteCache) {
     if (sjs.spriteCache.hasOwnProperty(src)) {
@@ -573,22 +453,23 @@ Scene.prototype.loadImages = function loadImages(images, callback) {
       }
     }
   }
-};
+}
 
 
 var MAPS_DIR = 'maps/';
 
-var Tiled = function(){
+var Tiled = function(url){
   this.tileLayers = [];
   this.MapObj = [];
+  this.url = url;
   this.tileProperties = [];
   this.playerStart = {};
   this.activeObjects = [];
   this.collisionObjects = [];
 
-  this.load = function(url) {
+  this.load = function() {
     var self = this;
-    Pottery.get(url, function(data){
+    Pottery.get(self.url, function(data){
       self.buildMap(JSON.parse(data));
     });
   };
@@ -745,13 +626,12 @@ var Tiled = function(){
     }
 
     console.log(images, self.tileProperties, self.activeObjects);
-    //Scene.loadImages(images, that.callback);
+    loadImages(images, that.callback);
   };
 };
 
 var tiled = {
-  Tiled: Tiled,
-  Scene: Scene
+  Tiled: Tiled
 };
 
 Pottery.prototype = Pottery.extend(Pottery.prototype, tiled);
