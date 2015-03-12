@@ -1,135 +1,132 @@
 /*jshint camelcase: false */
 
-var Tiled = Pottery.prototype.Class(function (tiled) {
-  tiled.el = null;
-  tiled.url = "";
-  tiled.tile_w = 0;
-  tiled.tile_h = 0;
-  tiled.tilesets = [];
-  tiled.width = 0;
-  tiled.height = 0;
-  tiled.layers = [];
-  tiled.objects = [];
-  tiled.scene = null;
-  tiled._ready = null;
-
-  tiled.initialize = function () {
-
-  };
-  tiled.ready = function (callback) {
-    tiled._ready = callback;
-  };
-
-  tiled.load = function (scene, el, url) {
-    tiled.el = el;
-    tiled.url = url;
-    tiled.scene = scene;
-    Pottery.get(tiled.url, function (data) {
-      tiled.tile_w = data.tileheight;
-      tiled.tile_h = data.tilewidth;
-      tiled.width = data.width;
-      tiled.height = data.height;
-      tiled.tilesets = data.tilesets;
-      tiled.layers = data.layers;
-      var props = tiled.tilesets[0].tileproperties,
+var Tiled = {
+  el: null,
+  url: "",
+  tile_w: 0,
+  tile_h: 0,
+  tilesets: [],
+  width: 0,
+  height: 0,
+  layers: [],
+  objects: [],
+  scene: null,
+  _ready: null,
+  initialize: function () {
+  },
+  ready: function (callback) {
+    this._ready = callback;
+  },
+  load: function (scene, el, url) {
+    var self = this;
+    this.el = el;
+    this.url = url;
+    this.scene = scene;
+    Pottery.get(self.url, function (data) {
+      data = JSON.parse(data);
+      self.tile_w = data.tileheight;
+      self.tile_h = data.tilewidth;
+      self.width = data.width;
+      self.height = data.height;
+      self.tilesets = data.tilesets;
+      self.layers = data.layers;
+      var props = self.tilesets[0].tileproperties,
         new_props = {};
       if (props) {
         for (var key in props) {
           new_props[+key + 1] = props[key];
         }
-        tiled.tilesets[0].tileproperties = new_props;
+        self.tilesets[0].tileproperties = new_props;
       }
-      tiled._draw();
+      self._draw();
     });
-  };
-
-  tiled._draw = function () {
-    tiled.map = tiled.scene.createElement();
-    tiled.el_layers = [];
+  },
+  _draw: function () {
+    this.map = this.scene.createElement();
+    this.el_layers = [];
     var x, y, tileset;
     var id, _tile, _id;
-    for (var i = 0; i < tiled.layers.length; i++) {
+    for (var i = 0; i < this.layers.length; i++) {
       id = 0;
-      tiled.el_layers[i] = tiled.scene.createElement();
-      tileset = tiled.tilesets[0];
-      if (tiled.layers[i].data) {
-        for (var k = 0; k < tiled.layers[i].height; k++) {
-          for (var j = 0; j < tiled.layers[i].width; j++) {
-            _tile = tiled.scene.createElement();
+      this.el_layers[i] = this.scene.createElement();
+      tileset = this.tilesets[0];
+      if (this.layers[i].data) {
+        for (var k = 0; k < this.layers[i].height; k++) {
+          for (var j = 0; j < this.layers[i].width; j++) {
+            _tile = this.scene.createElement();
 
-            _id = tiled.layers[i].data[id];
+            _id = this.layers[i].data[id];
             if (_id !== 0) {
               _id--;
-              y = tiled.tile_h * parseInt(_id / (Math.round(tileset.imagewidth / tiled.tile_h)), 10);
-              x = tiled.tile_w * (_id % Math.round(tileset.imagewidth / tiled.tile_w));
+              y = this.tile_h * parseInt(_id / (Math.round(tileset.imagewidth / this.tile_h)),10);
+              x = this.tile_w * (_id % Math.round(tileset.imagewidth / this.tile_w));
 
-              _tile.drawImage(tileset.name, x, y, tiled.tile_w, tiled.tile_h, j * tiled.tile_w, k * tiled.tile_h, tiled.tile_w, tiled.tile_h);
-              tiled.el_layers[i].append(_tile);
+              _tile.drawImage(tileset.name, x, y, this.tile_w, this.tile_h, j * this.tile_w, k * this.tile_h, this.tile_w, this.tile_h);
+              this.el_layers[i].append(_tile);
             }
             id++;
           }
         }
       }
       else {
-        tiled.objects.push(tiled.el_layers[i]);
+        this.objects.push(this.el_layers[i]);
       }
-      tiled.map.append(tiled.el_layers[i]);
+      this.map.append(this.el_layers[i]);
     }
-    tiled.el.append(tiled.map);
-    if (tiled._ready) {
-      tiled._ready.call(this);
+    this.el.append(this.map);
+    if (this._ready) {
+      this._ready.call(this);
     }
-  };
-
-  tiled.getLayerObject = function (pos) {
+  },
+  getLayerObject: function (pos) {
     if (!pos) {
       pos = 0;
     }
-    return tiled.objects[pos];
-  };
-  tiled.getLayer = function (id) {
-    return tiled.el_layers[id];
-  };
-  tiled.getMap = function () {
-    return tiled.map;
-  };
-  tiled.getTileWidth = function () {
-    return tiled.tile_w;
-  };
-  tiled.getTileHeight = function () {
-    return tiled.tile_h;
-  };
-  tiled.getWidthPixel = function () {
-    return tiled.width * tiled.getTileWidth();
-  };
-  tiled.getHeightPixel = function () {
-    return tiled.height * tiled.getTileHeight();
-  };
-  tiled.getDataLayers = function () {
+    return this.objects[pos];
+  },
+  getLayer: function (id) {
+    return this.el_layers[id];
+  },
+  getMap: function () {
+    return this.map;
+  },
+  getTileWidth: function () {
+    return this.tile_w;
+  },
+  getTileHeight: function () {
+    return this.tile_h;
+  },
+  getWidthPixel: function () {
+    return this.width * this.getTileWidth();
+  },
+  getHeightPixel: function () {
+    return this.height * this.getTileHeight();
+  },
+  getDataLayers: function () {
     var layer = [];
-    for (var i = 0; i < tiled.layers.length; i++) {
-      if (tiled.layers[i].data) {
-        layer.push(tiled.layers[i].data);
+    for (var i = 0; i < this.layers.length; i++) {
+      if (this.layers[i].data) {
+        layer.push(this.layers[i].data);
       }
     }
     return layer;
-  };
-  tiled.getTileInMap = function (x, y, pos) {
+  },
+  getTileInMap: function (x, y, pos) {
     if (!pos) {
       pos = 0;
     }
-
-    var tile_pos = tiled.width * y + x;
+    var tile_pos = this.width * y + x;
     return tile_pos;
-  };
-  tiled.getTileProperties = function (tile, layerOrX, y) {
-    var tileset = tiled.tilesets[0];
+  },
+  getTileProperties: function (tile, layerOrX, y) {
+    var self = this;
+    var tileset = this.tilesets[0];
 
     function _getTileLayers(tile) {
       var _layers = [];
-      for (var i = 0; i < tiled.layers.length; i++) {
-        if (tiled.layers[i].data) {
-          _layers.push(tileset.tileproperties[tiled.layers[i].data[tile]]);
+      for (var i = 0; i < self.layers.length; i++) {
+        if (self.layers[i].data) {
+          _layers.push(tileset.tileproperties[self.layers[i].data[tile]]);
         }
       }
       return _layers;
@@ -139,12 +136,12 @@ var Tiled = Pottery.prototype.Class(function (tiled) {
       return _getTileLayers(tile);
     }
     else if (y !== undefined) {
-      var new_tile = tiled.getTileInMap(layerOrX, y);
+      var new_tile = this.getTileInMap(layerOrX, y);
       return _getTileLayers(new_tile);
     }
-    return tileset.tileproperties[tiled.layers[layerOrX].data[tile]];
-  };
-});
+    return tileset.tileproperties[this.layers[layerOrX].data[tile]];
+  }
+};
 
 var tiled = {
   Tiled: Tiled
