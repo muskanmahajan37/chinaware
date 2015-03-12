@@ -25,10 +25,8 @@
 
     <script>
       var L = new Pottery();
-      var scene = window.document;
-      scene.createElement = function() {
-      };
-      L.Tiled.load(scene,window.document.createElement('div'),'assets/test.json')
+      var tiled = new L.Tiled();
+      tiled.load('assets/test.json')
     </script>
   </body>
 </html>
