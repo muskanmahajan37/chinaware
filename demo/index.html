@@ -24,7 +24,11 @@
     <script src="./../dist/pottery.js"></script>
 
     <script>
-      /* end demo script */
+      var L = new Pottery();
+      var scene = window.document;
+      scene.createElement = function() {
+      };
+      L.Tiled.load(scene,window.document.createElement('div'),'assets/test.json')
     </script>
   </body>
 </html>
