@@ -1,11 +1,11 @@
 {
-  "name": "pottery",
+  "name": "Chinaware",
   "version": "0.0.0",
-  "main": "dist/pottery.min.js",
+  "main": "dist/Chinaware.min.js",
   "description": "a light weight javascript game engine for mobile ",
   "repository": {
     "type": "git",
-    "url": "git://github.com/phodal/pottery.git"
+    "url": "git://github.com/phodal/Chinaware.git"
   },
   "keywords": [],
   "author": "Phodal Huang",

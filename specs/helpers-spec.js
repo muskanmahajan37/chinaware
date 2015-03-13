@@ -1,7 +1,7 @@
 'use strict';
 
 describe("Helper", function () {
-    var l = Pottery;
+    var l = Chinaware;
 
     it("should be a object", function () {
         expect(l.isObject([])).toEqual(true);

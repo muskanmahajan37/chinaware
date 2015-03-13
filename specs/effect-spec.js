@@ -3,7 +3,7 @@
 describe("Effect", function () {
   var L, content, elementID = "content";
   beforeEach(function () {
-        L = new Pottery();
+        L = new Chinaware();
         jasmine.clock().install();
     });
 

@@ -1,4 +1,4 @@
-# pottery
+# Chinaware
 
 > a light weight javascript game engine for mobile 
 
@@ -6,18 +6,23 @@
 
 
 
-##Todo
+##Doing
 
-- Render 
-- TiledMap Editor 支持
+- TiledMap Render(@phodal)
+
+##Done
+
+- Ajax(@phodal)
+- Event(@phodal)
+
+##Todo
 - DOM
+- Render
 - Loader
-- Event
 - Input(mouse,keyboard,touch)
 - UI
 - Animation
 - Audio
-- Ajax
  
 附加
  

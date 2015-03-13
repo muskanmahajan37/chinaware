@@ -9,7 +9,7 @@ describe("Ajax", function () {
     it("specifying response when you need it", function (done) {
         var doneFn = jasmine.createSpy("success");
 
-        Pottery.get('/some/cool/url', function (result) {
+        Chinaware.get('/some/cool/url', function (result) {
             expect(result).toEqual("awesome response");
             done();
         });
@@ -27,7 +27,7 @@ describe("Ajax", function () {
     it("specifying html when you need it", function (done) {
         var doneFn = jasmine.createSpy("success");
 
-        Pottery.load('/some', function (result) {
+        Chinaware.load('/some', function (result) {
             expect(result).toEqual("<h2>fsasfA</h2>");
             done();
         });
@@ -46,7 +46,7 @@ describe("Ajax", function () {
     it("should be post to some where", function (done) {
         var doneFn = jasmine.createSpy("success");
 
-        Pottery.post('/some/cool/url', [], function (result) {
+        Chinaware.post('/some/cool/url', [], function (result) {
             expect(result).toEqual("awesome response");
             done();
         });

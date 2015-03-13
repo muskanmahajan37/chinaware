@@ -4,7 +4,7 @@ describe("Template", function() {
     var L;
 
     beforeEach(function() {
-        L = new Pottery();
+        L = new Chinaware();
         var element = document.createElement('div');
         element.id = "results";
         document.body.appendChild(element);

@@ -27,4 +27,4 @@ var event = {
 };
 
 
-Pottery.prototype = Pottery.extend(Pottery.prototype, event);
+Chinaware.prototype = Chinaware.extend(Chinaware.prototype, event);

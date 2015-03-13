@@ -4,7 +4,7 @@ describe("Event", function() {
     var L;
 
     beforeEach(function() {
-        L = new Pottery();
+        L = new Chinaware();
     });
 
     it("should be use promise patterns", function() {

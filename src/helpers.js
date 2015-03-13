@@ -2,17 +2,17 @@
 *     Underscore may be freely distributed under the MIT license.
 */
 
-Pottery.isObject = function (obj) {
+Chinaware.isObject = function (obj) {
     var type = typeof obj;
     return type === 'function' || type === 'object' && !!obj;
 };
 
-Pottery.isFunction = function(obj) {
+Chinaware.isFunction = function(obj) {
     return typeof obj == 'function' || false;
 };
 
-Pottery.defaults = function(obj) {
-    if (!Pottery.isObject(obj)) {
+Chinaware.defaults = function(obj) {
+    if (!Chinaware.isObject(obj)) {
         return obj;
     }
 
@@ -27,8 +27,8 @@ Pottery.defaults = function(obj) {
     return obj;
 };
 
-Pottery.extend = function (obj) {
-    if (!Pottery.isObject(obj)) {
+Chinaware.extend = function (obj) {
+    if (!Chinaware.isObject(obj)) {
         return obj;
     }
     var source, prop;

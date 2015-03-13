@@ -13,7 +13,7 @@ module.exports = function (grunt) {
     },
 
     jasmine : {
-      src : 'dist/Pottery.js',
+      src : 'dist/Chinaware.js',
       options : {
         host: "http://0.0.0.0:8000",
         vendor: ['node_modules/jasmine-ajax/lib/mock-ajax.js'],
@@ -70,7 +70,7 @@ module.exports = function (grunt) {
     },
 
     jshint: {
-      files: ['dist/Pottery.js'],
+      files: ['dist/Chinaware.js'],
       options: {
         globals: {
           console: true,
@@ -100,7 +100,7 @@ module.exports = function (grunt) {
           {
             expand: true,
             flatten: true,
-            src: ['dist/Pottery.js', 'dist/Pottery.min.js'],
+            src: ['dist/Chinaware.js', 'dist/Chinaware.min.js'],
             dest: 'dist/'
           }
         ]

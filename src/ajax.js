@@ -1,16 +1,16 @@
-Pottery.get = function (url, callback) {
-    Pottery.send(url, 'GET', callback);
+Chinaware.get = function (url, callback) {
+    Chinaware.send(url, 'GET', callback);
 };
 
-Pottery.load = function (url, callback) {
-    Pottery.send(url, 'GET', callback);
+Chinaware.load = function (url, callback) {
+    Chinaware.send(url, 'GET', callback);
 };
 
-Pottery.post = function (url, data, callback) {
-    Pottery.send(url, 'POST', callback, data);
+Chinaware.post = function (url, data, callback) {
+    Chinaware.send(url, 'POST', callback, data);
 };
 
-Pottery.send = function (url, method, callback, data) {
+Chinaware.send = function (url, method, callback, data) {
     data = data || null;
     var request = new XMLHttpRequest();
     if (callback instanceof Function) {

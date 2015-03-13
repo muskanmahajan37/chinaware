@@ -1,5 +1,5 @@
 /**
- * Pottery Class 0.0.1
+ * Chinaware Class 0.0.1
  * JavaScript Class built-in inheritance system
  *(c) 2015, Fengda Huang - http://www.phodal.com
  *
@@ -8,9 +8,9 @@
  * Inspired by https://github.com/munro/self, https://github.com/jneen/pjs
  */
 
-Pottery.prototype.Class = (function (prototype, ownProperty) {
+Chinaware.prototype.Class = (function (prototype, ownProperty) {
 
-	var PotteryClass = function Klass(_superclass, definition) {
+	var ChinawareClass = function Klass(_superclass, definition) {
 
         function Class() {
             var self = this instanceof Class ? this : new Basic();
@@ -33,11 +33,11 @@ Pottery.prototype.Class = (function (prototype, ownProperty) {
         };
 
         var open = (Class.open = function (def) {
-            if (Pottery.isFunction(def)) {
+            if (Chinaware.isFunction(def)) {
                 def = def.call(Class, proto, _super, Class, _superclass);
             }
 
-            if (Pottery.isObject(def)) {
+            if (Chinaware.isObject(def)) {
                 for (var key in def) {
                     if (ownProperty.call(def, key)) {
                         proto[key] = def[key];
@@ -55,6 +55,6 @@ Pottery.prototype.Class = (function (prototype, ownProperty) {
         return (open)(definition);
     };
 
-    return PotteryClass;
+    return ChinawareClass;
 
 })('prototype', ({}).hasOwnProperty);

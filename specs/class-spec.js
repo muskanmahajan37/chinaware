@@ -3,7 +3,7 @@
 describe("Class", function () {
     var L, ninja, Person, killer;
 
-    L = new Pottery();
+    L = new Chinaware();
     var Person = L.Class(function (person) {
         person.init = function (isDancing) {
             this.dancing = isDancing

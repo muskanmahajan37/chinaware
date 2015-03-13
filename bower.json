@@ -1,7 +1,7 @@
 {
-  "name": "pottery",
+  "name": "Chinaware",
   "version": "0.0.0",
-  "main": "dist/pottery.min.js",
+  "main": "dist/Chinaware.min.js",
   "ignore": [
     "**/.*",
     "node_modules",

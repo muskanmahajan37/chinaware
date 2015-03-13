@@ -77,4 +77,4 @@ var fx = {
     FX: FX
 };
 
-Pottery.prototype = Pottery.extend(Pottery.prototype, fx);
+Chinaware.prototype = Chinaware.extend(Chinaware.prototype, fx);

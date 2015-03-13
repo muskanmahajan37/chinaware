@@ -89,4 +89,4 @@ var template = {
     Template: Template
 };
 
-Pottery.prototype = Pottery.extend(Pottery.prototype, template);
+Chinaware.prototype = Chinaware.extend(Chinaware.prototype, template);
