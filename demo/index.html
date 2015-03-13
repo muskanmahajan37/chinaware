@@ -11,7 +11,7 @@
     </style>
   </head>
   <body>
-    <h1>Chinaware demo</h1>
+  <canvas height="480" width="640"></canvas>
 
     <!-- begin demo markup -->
 
@@ -24,9 +24,11 @@
     <script src="./../dist/Chinaware.js"></script>
 
     <script>
-      var L = new Chinaware();
-      var tiled = new L.Tiled('maps/town.json');
-      tiled.load()
+      var c = document.getElementsByTagName('canvas')[0].getContext('2d');
+      var china = new Chinaware();
+
+      var s = new china.Tiled(c);
+      s.load('mountain');
     </script>
   </body>
 </html>
